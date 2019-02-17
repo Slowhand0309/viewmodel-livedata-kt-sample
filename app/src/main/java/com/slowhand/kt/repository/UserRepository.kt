@@ -1,13 +1,18 @@
 package com.slowhand.kt.repository
 
-import repository.data.User
+import com.slowhand.kt.repository.data.Result
+import com.slowhand.kt.repository.network.GithubApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class UserRepository {
 
-    fun getUsers(): List<User> {
-        return listOf<User>(
-            User(1, "tarou"),
-            User(2, "hanako")
-        )
+    private val service: GithubApiService by lazy {
+        GithubApiService.create()
     }
+
+    suspend fun getUsers(query: String): Result? =
+        withContext(Dispatchers.Default) {
+            service.search(query).await().body()
+        }
 }

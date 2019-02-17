@@ -30,9 +30,10 @@ class ListFragment: Fragment() {
 
             listViewModel.getUsersLiveData().observe(activity, Observer { data ->
                 userList.clear()
-                data.map { userList.add(it.name) }
+                data.map { userList.add(it.url) }
                 recyclerView.adapter?.notifyDataSetChanged()
             })
+            listViewModel.reload("android")
         }
     }
 }
